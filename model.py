@@ -17,7 +17,9 @@ class cyclegan(object):
         self.image_size = args.fine_size
         self.input_c_dim = args.input_nc
         self.output_c_dim = args.output_nc
-        self.L1_lambda = args.L1_lambda
+        self.lambda_idt = args.identity
+        self.lambda_A = args.lambda_A
+        self.lambda_B = args.lambda_B
         self.dataset_dir = args.dataset_dir
 
         self.discriminator = discriminator
@@ -53,20 +55,29 @@ class cyclegan(object):
         self.fake_A_ = self.generator(self.fake_B, self.options, False, name="generatorB2A")
         self.fake_A = self.generator(self.real_B, self.options, True, name="generatorB2A")
         self.fake_B_ = self.generator(self.fake_A, self.options, True, name="generatorA2B")
+        
+        self.idt_A = self.generator(self.real_B, self.options, True, name="generatorA2B")
+        self.idt_B = self.generator(self.real_A, self.options, True, name="generatorB2A")
 
         self.DB_fake = self.discriminator(self.fake_B, self.options, reuse=False, name="discriminatorB")
         self.DA_fake = self.discriminator(self.fake_A, self.options, reuse=False, name="discriminatorA")
         self.g_loss_a2b = self.criterionGAN(self.DB_fake, tf.ones_like(self.DB_fake)) \
-            + self.L1_lambda * abs_criterion(self.real_A, self.fake_A_) \
-            + self.L1_lambda * abs_criterion(self.real_B, self.fake_B_)
+            + self.lambda_A * abs_criterion(self.real_A, self.fake_A_) \
+            + self.lambda_B * abs_criterion(self.real_B, self.fake_B_) \
+            + self.lambda_idt * self.lambda_B * abs_criterion(self.real_B, self.idt_A)
+            
         self.g_loss_b2a = self.criterionGAN(self.DA_fake, tf.ones_like(self.DA_fake)) \
-            + self.L1_lambda * abs_criterion(self.real_A, self.fake_A_) \
-            + self.L1_lambda * abs_criterion(self.real_B, self.fake_B_)
+            + self.lambda_A * abs_criterion(self.real_A, self.fake_A_) \
+            + self.lambda_B * abs_criterion(self.real_B, self.fake_B_) \
+            + self.lambda_idt * self.lambda_A * abs_criterion(self.real_A, self.idt_B)
+            
         self.g_loss = self.criterionGAN(self.DA_fake, tf.ones_like(self.DA_fake)) \
             + self.criterionGAN(self.DB_fake, tf.ones_like(self.DB_fake)) \
-            + self.L1_lambda * abs_criterion(self.real_A, self.fake_A_) \
-            + self.L1_lambda * abs_criterion(self.real_B, self.fake_B_)
-
+            + self.lambda_A * abs_criterion(self.real_A, self.fake_A_) \
+            + self.lambda_B * abs_criterion(self.real_B, self.fake_B_) \
+            + self.lambda_idt * self.lambda_B * abs_criterion(self.real_B, self.idt_A) \
+            + self.lambda_idt * self.lambda_A * abs_criterion(self.real_A, self.idt_B)
+            
         self.fake_A_sample = tf.placeholder(tf.float32,
                                             [None, self.image_size, self.image_size,
                                              self.input_c_dim], name='fake_A_sample')
@@ -177,6 +188,9 @@ class cyclegan(object):
 
                 if np.mod(counter, args.save_freq) == 2:
                     self.save(args.checkpoint_dir, counter)
+                    
+        self.saveGraph(args.checkpoint_dir)
+        self.saveModelBuilder('cyclegan')
 
     def save(self, checkpoint_dir, step):
         model_name = "cyclegan.model"
@@ -189,6 +203,48 @@ class cyclegan(object):
         self.saver.save(self.sess,
                         os.path.join(checkpoint_dir, model_name),
                         global_step=step)
+        
+    # save to graph that can be used to generate tflite file
+    def saveGraph(self,graph_dir):
+        tf.train.write_graph(self.sess.graph.as_graph_def(), graph_dir, 'cyclegan.pb', as_text=False)
+        tf.train.write_graph(self.sess.graph.as_graph_def(), graph_dir, 'cyclegan.pbtxt', as_text=True)
+        
+    # save model that can be access on the cloud server
+    def saveModelBuilder(self,export_path,version = '1'):
+          # Export model
+          # WARNING(break-tutorial-inline-code): The following code snippet is
+          # in-lined in tutorials, please update tutorial documents accordingly
+          # whenever code changes.
+          export_path = os.path.join(
+              export_path,
+              version)
+          print('Exporting trained model to', export_path)
+          builder = tf.saved_model.builder.SavedModelBuilder(export_path)
+        
+          # Build the signature_def_map.
+        
+          tensor_info_x = tf.saved_model.utils.build_tensor_info(self.test_A)
+          tensor_info_y = tf.saved_model.utils.build_tensor_info(self.testB)
+        
+          prediction_signature = (
+              tf.saved_model.signature_def_utils.build_signature_def(
+                  inputs={'images': tensor_info_x},
+                  outputs={'scores': tensor_info_y},
+                  method_name=tf.saved_model.signature_constants.PREDICT_METHOD_NAME))
+        
+          legacy_init_op = tf.group(tf.tables_initializer(), name='legacy_init_op')
+          builder.add_meta_graph_and_variables(
+              self.sess, [tf.saved_model.tag_constants.SERVING],
+              signature_def_map={
+                  'predict_images':
+                      prediction_signature
+              },
+              legacy_init_op=legacy_init_op)
+        
+          builder.save()
+        
+          print('Done exporting!')        
+        
 
     def load(self, checkpoint_dir):
         print(" [*] Reading checkpoint...")
@@ -262,3 +318,5 @@ class cyclegan(object):
                 '..' + os.path.sep + image_path)))
             index.write("</tr>")
         index.close()
+#        tflite_model = tf.contrib.lite.toco_convert(self.sess.graph.as_graph_def(), in_var, out_var)
+#        open("converteds_model.tflite", "wb").write(tflite_model)

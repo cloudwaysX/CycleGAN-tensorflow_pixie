@@ -30,6 +30,15 @@ For example in paper:
 
 -->
 
+## Update for pixie
+- Add identity loss
+- Add saveGraph for generating non-frozen tflite file
+refer to [this ulr](https://github.com/tensorflow/tensorflow/tree/master/tensorflow/contrib/lite/toco)
+- Add saveModelBuilder for generating models on server
+refer to [this ulr](https://github.com/tensorflow/serving)
+- Add image augmentation helper code to do the preprocessing
+- Add cyclegan_client.py to communicate to the server
+
 ## Update Results
 The results of this implementation:
 

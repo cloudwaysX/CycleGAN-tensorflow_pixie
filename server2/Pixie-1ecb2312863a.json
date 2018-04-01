@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "glass-amplifier-197005",
+  "private_key_id": "1ecb2312863a443b70ee62ab37ba555a551e51b2",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCzbWXzJWmPjx7d\nmW6hOcN121Cpr3MZKwKDX4tcoSdq75cZqbdTQIvqWLYjmok/F46uNslOWCk7wvN3\nR9OISi6dDssvvpghWSm0iRCifiUi+UXIMw5opovjjUSYpq5C1BCkJYUigna6tRyx\n8AAuOSE0cONHouC7mQAxZJFbS2mEsGguhumc/u5ApLMGb8QPKtI2Pj5R+PEJvDur\nh660+qRBrfixdJyoJ4kEmHk3NrabwIE0VCA+a1PL2rFExAqUNT9ITco/Hdgo8DTB\nR7hXOfCloi2dviug+eV5TZd7PmqRyXUbQMFni/DOYNcZ97RZ3I+ZzN/NgIDMVJtG\nRhDzNOWDAgMBAAECggEACuDvpPnYOB2H1Ay48eqEKNGmxtr94gFDEj8JPpEAyFGF\nekdZd6E6unctd+QnPR2LB5IHy4m52kc8JrfCoglJYTlj5V2rcJ4s0qbazNdUHhY5\n/mTmEz9BzQakKZM1jpS3+5PQyiJZ24Een8U65ZKOKlVL2myMLqOcqOH9lCjy2VoU\ntT7TD31YHw8xSlnyF8Bpusa7pXDOV72hTOXSjA85HMM53Rp7wzWgzLgXs9+iMcul\naVFiWfV/SwvUxkl8+5vchpCJ0sn52OrnlzVH0zC68sA0iQ+d3hkX+jSZkOpr/9LC\nytZ+T5EMp9R9wlsO+DfDw7Jc8MDnJBygW522aTxRCQKBgQDj6NhJuqoKzkTcPiUt\nLlPHMM8pMgCU2OGu0lD3i3eDw3ZlpOq9xqjAWs4SsqnDSa94SzMAcRZeqW16HyT8\nc/O4BsBauMgo05i2xX66bLRSlJz6iwmvnlEjOfG8H80AtYN+c2Mc9op2YlSRZUzf\nPjKR6SGk7CAUPIBMFqVrGRRleQKBgQDJis9dqlGQNqmmTGIkFtROXgXxY5bU9LaI\nbvdKcxH7exIR4llNKsmt75qiDONoKccfuFbYZSGX13U/g8vg/R8E5KUWZr8L0y7v\nVdR1LApcKLgw5corLFBLv042jWgkO0D+xGNygbvJScutu5KehU8V+0RU3nzPlb1H\nV7JMj1AP2wKBgHRzLsBNXkDzMAAQyNITD7+BUvhLkjx7rKS01aYGXuS2ZLJ+12ps\nLSFLxGuNWmxsI/olAkRBhBqOG2AAtddAL9FhsbspGyyxISCSPLRogqKHSMZDcImJ\nLRAAtWFYJlksZamgr43G8uyWRXuc9PBESXaAVi58b8+nMi6ui4rzX5aRAoGBAKt4\nLAEWvRojR6cy6XSm765VFF1RS6yXHw1oy4BN8oixJqiMmUmsE7amWjtxF7ExijaU\nkV6+fBxBtYF6UmVzNYbmOQacGAKphA8gSQf/ljjedAc2GhEtPIuVkaecG3Rn7V5U\nG//6HJie7mk7Yvz3klezVWmXeTzruwQNuqakb4ttAoGBALrC7pliLm8p674t6dvJ\nB5q1yxXdor6QWiv3fezoszvsPkn/Q6HgpRBcr62TkdcYNwVA5TevIiTba23Fd5Ot\nGV5dbGHhDvaB3YP/gZUfwGAqOUr2SF3WmkGTn2ObTMgCxwrsyaXxv8xba6p6D4d5\nVDXe/th1Yjpgv4dQIM3o4mYb\n-----END PRIVATE KEY-----\n",
+  "client_email": "pixie-151@glass-amplifier-197005.iam.gserviceaccount.com",
+  "client_id": "109168911268905630340",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/pixie-151%40glass-amplifier-197005.iam.gserviceaccount.com"
+}

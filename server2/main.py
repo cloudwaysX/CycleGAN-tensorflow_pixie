@@ -1,29 +1,15 @@
 import sys
 import os
 import os
-from options.test_options import TestOptions
 from data.data_loader import CreateDataLoader
 from models.models import create_model
 from util.visualizer import Visualizer
 from util import html
 from PIL import Image
 import sys
+from shutil import copyfile
+# import SR
 
-#from options.test_options import TestOptions
-#from data.data_loader import CreateDataLoader
-#from models.models import create_model
-#from util.visualizer import Visualizer
-#from util import html
-#
-#opt = TestOptions().parse()
-#opt.nThreads = 1   # test code only supports nThreads = 1
-#opt.batchSize = 1  # test code only supports batchSize = 1
-#opt.serial_batches = True  # no shuffle
-#opt.no_flip = True  # no flip
-#
-#data_loader = CreateDataLoader(opt)
-#dataset = data_loader.load_data()
-#model = create_model(opt)
 
 # =============================================================================
 # 
@@ -34,13 +20,16 @@ import sys
 from flask import Flask, render_template, request,redirect, url_for,flash,send_from_directory
 from werkzeug.utils import secure_filename
 
+
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "Pixie-1ecb2312863a.json"
+
 app = Flask(__name__)
 
 
 UPLOAD_FOLDER = 'datasets/testA'
 RESULT_FOLDER = 'datasets/fakeB'
 ALLOWED_EXTENSIONS = set(['pdf', 'png', 'jpg', 'jpeg'])
-
+categories = {'food':[],'style_not_imported':[]}
 
 
 
@@ -52,15 +41,14 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['RESULT_FOLDER'] = RESULT_FOLDER
 app.config['GPU_ID']=[0]
 app.config['checkpoints_dir'] = './checkpoints'
-app.config['name'] = 'flickrFood2InsFood'
+app.config['name'] = 'vibrantandpure'
 app.config['ngf'] = 64
 app.config['which_model_netG'] = 'resnet_9blocks'
 app.config['norm'] = 'instance'
 app.config['init_type'] = 'normal'
-app.config['which_epoch'] = '40'
+app.config['which_epoch'] = '60'
 
 opt = app.config
-
 
 
 
@@ -71,13 +59,8 @@ def allowed_file(filename):
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
-        
-#        for f in os.listdir(app.config['UPLOAD_FOLDER']):
-#            os.remove(f)        
-#        for f in os.listdir(app.config['RESULT_FOLDER']):
-#            os.remove(f) 
-#        
-#        
+        cleanFolder()
+       
         # check if the post request has the file part
         if 'file[]' not in request.files:
             flash('No file part')
@@ -91,24 +74,46 @@ def upload_file():
         for file in files:
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
-                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        styleTransfer()
-        return redirect(url_for('get_gallery'))
+                file.save(os.path.join(opt['UPLOAD_FOLDER'],'unlabeled',filename))
+                cur_category = categoryRecognition(filename)
+                copyfile(os.path.join(opt['UPLOAD_FOLDER'],'unlabeled',filename), os.path.join(opt['UPLOAD_FOLDER'], cur_category,filename))
+        return redirect(url_for('get_style_choice'))
             
     return render_template('uploadImg.html')
 
-
 @app.route('/uploads/<filename>')
-def send_image(filename):    
-    return send_from_directory(app.config['RESULT_FOLDER'], filename)
+def send_upload(filename):    
+    print(filename)
+    return send_from_directory(opt['UPLOAD_FOLDER'], filename)
+
+@app.route('/results/<filename>')
+def send_result(filename):    
+    return send_from_directory(opt['RESULT_FOLDER'], filename)
+
+@app.route('/style_choice',methods=['GET', 'POST'])
+def get_style_choice():
+    if request.method == 'POST':
+        app.config['name'] = 'flickrFood2InsFood'
+        styleName = request.form.get('style_select')
+        degree = str(request.form.get('degree_select'))
+        styleTransfer(styleName,str(degree))
+        return redirect(url_for('get_gallery'))
+
+    image_names = os.listdir(opt['UPLOAD_FOLDER'])
+    return render_template( 'style_choice.html', categories=categories)
 
 @app.route('/gallery')
 def get_gallery():
-    image_names = os.listdir(app.config['RESULT_FOLDER'])
+    image_names = os.listdir(opt['RESULT_FOLDER'])
     return render_template( 'results.html', results=image_names)
  
     
-def styleTransfer():
+def styleTransfer(styleName,degree):
+
+    opt['name'] = styleName
+    opt['which_epoch'] = degree
+    opt['category'] = 'food'
+
     data_loader = CreateDataLoader(opt)
     dataset = data_loader.load_data()
     model = create_model(opt)
@@ -120,7 +125,37 @@ def styleTransfer():
         model.test()
         visuals = model.get_current_visuals()
         img_path = model.get_image_paths()
-        save_images(app.config['RESULT_FOLDER'],visuals,img_path)
+        save_images(opt['RESULT_FOLDER'],visuals,img_path)
+
+def categoryRecognition(filename):
+    import io
+    import os
+
+    # Imports the Google Cloud client library
+    from google.cloud import vision
+    from google.cloud.vision import types
+
+    # Instantiates a client
+    client = vision.ImageAnnotatorClient()
+
+    # Loads the image into memory
+    dir = os.path.join(opt['UPLOAD_FOLDER'], 'unlabeled',filename)
+    with io.open(dir, 'rb') as image_file:
+        content = image_file.read()
+
+    image = types.Image(content=content)
+
+    # Performs label detection on the image file
+    response = client.label_detection(image=image)
+    labels = response.label_annotations
+
+    for label in labels:
+        if 'food' in label.description:
+            categories['food'].append(filename)
+            return 'food'
+    categories['style_not_imported'].append(filename)
+    return 'style_not_imported'
+
            
     
 
@@ -140,7 +175,16 @@ def save_images(image_dir, visuals, image_path, aspect_ratio=1.0):
 
 # test
 
-    
-
+def cleanFolder():
+    temp_dict = {}
+    dirPath = opt['RESULT_FOLDER']
+    fileList = os.listdir(dirPath)
+    for fileName in fileList:
+        os.remove(dirPath+"/"+fileName)
+    dirPath = opt['UPLOAD_FOLDER']
+    subFolderList = os.listdir(dirPath)
+    for subFolder in subFolderList:
+        for fileName in os.listdir(os.path.join(dirPath,subFolder)):
+            os.remove(os.path.join(dirPath,subFolder,fileName))
 
 

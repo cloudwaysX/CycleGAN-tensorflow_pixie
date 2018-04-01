@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Style_choice</title>
+</head>
+<body>
+{{categories}}
+<hr>
+<figure>
+{% for image_name in categories['food'] %}
+	<img src = " {{url_for('send_upload',filename=image_name)}}" height = 256/4 width = 256/4>
+{% endfor %}
+<figcaption>food</figcaption>
+</figure>
+<figure>
+{% for image_name in categories['style_not_imported'] %}
+	<img src = " {{url_for('send_upload',filename=image_name)}}" height = 256/4 width = 256/4>
+{% endfor %}
+<figcaption>style_not_imported</figcaption>
+</figure>
+
+<!-- <div id="container">
+  <div class="pagetitle">
+    <h1>Let's Rock!</h1>
+  </div>
+  <div id="main">
+    <form method=post>
+     <input type=submit value="Style Transfer">
+    </form>
+  </div>
+</div> -->
+
+<form class="form-inline" method="POST">
+  <div class="form-group">
+    <div class="input-group">
+        <span class="input-group-addon">Please select</span>
+            <select name="style_select" class="selectpicker form-control">
+            	<option value="vibrantandpure">food_style_1</option>
+              	<option value="lichipan">food_style_2</option>
+            </select>
+
+            <select name="degree_select" class="selectpicker form-control">
+            	{% for degree in range(20,60,10)%}
+            		<option value={{degree}}>{{degree}}</option>
+              	{% endfor %}
+            </select>
+    </div>
+    <button type="submit" class="btn btn-default">Style Transfer</button>
+  </div>
+</form>
+
+</body>
+</html>

@@ -1,54 +1,121 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Style_choice</title>
-</head>
-<body>
-{{categories}}
-<hr>
-<figure>
+
+{% extends "base.html" %}
+{% block title %}Filter Choose{% endblock %}
+
+{% block page_content %}
+
+<div style="margin-top: 10vh;">
+  <p class="informA">Please choose a filter.</p>
+  <p class="informA">This will apply to all the other photos as well.</p>
+</div>
+
+<form method="POST">
+
+<div class="labelA">Food</div>
+<div id="imgA">
 {% for image_name in categories['food'] %}
-	<img src = " {{url_for('send_upload',filename=image_name)}}" height = 256/4 width = 256/4>
+	<img src = " {{url_for('get_file',filename=image_name)}}" height = 224/4 width = 224/4>
 {% endfor %}
-<figcaption>food</figcaption>
-</figure>
-<figure>
+</div>
+
+ <div id="filtersFoodA">
+  <div id="labelFoodA">Food</div>
+  <div class="placeholderA">
+      <input type="checkbox" class="toggle" name='food' value = "lichipan">
+      <img src = " {{url_for('static',filename='img/lichipan.jpg')}}" height = 224/4 width = 224/4>
+      <b><font color="white">@____lichipan____</b>
+  </div>
+  <div class="placeholderA">
+      <input type="checkbox" class="toggle" name='food' value = "skyemcalpine">
+      <img src = " {{url_for('static',filename='img/skyemcalpine.png')}}" height = 224/4 width = 224/4>
+      <b><font color="white">@skyemcalpine</b>
+  </div>
+  <div class="placeholderA">
+      <input type="checkbox" class="toggle" name='food' value = "artfuldesperado">
+      <img src = " {{url_for('static',filename='img/artfuldesperado.png')}}" height = 224/4 width = 224/4>
+      <b><font color="white">@artfuldesperado</b>
+  </div>
+  <div class="placeholderA">
+      <input type="checkbox" class="toggle" name='food' value = "vibrantandpure">
+      <img src = " {{url_for('static',filename='img/vibrantandpure.jpg')}}" height = 224/4 width = 224/4>
+      <b><font color="white">@vibrantandpure</b>
+  </div>
+</div>
+
+<div class="labelA">Room</div>
+<div id="imgA">
+{% for image_name in categories['room'] %}
+  <img src = " {{url_for('get_file',filename=image_name)}}" height = 224/4 width = 224/4>
+{% endfor %}
+</div>
+
+<div id="filtersRoomA">
+  <div id="labelFoodA">Room</div>
+  <div class="placeholderA">
+      <input type="checkbox" class="toggle" name='room' value = "alyssakapitointeriors">
+      <img src = " {{url_for('static',filename='img/alyssakapitointeriors.png')}}" height = 224/4 width = 224/4>
+      <b><font color="white">@_alyssakapitointeriors</b>
+  </div>
+  <div class="placeholderA">
+      <input type="checkbox" class="toggle" name='room' value = "preppybohemianathome">
+      <img src = " {{url_for('static',filename='img/preppybohemianathome.png')}}" height = 224/4 width = 224/4>
+      <b><font color="white">@preppybohemianathome</b>
+  </div>
+  <div class="placeholderA">
+      <input type="checkbox" class="toggle" name='room' value = "titonfenwick">
+      <img src = " {{url_for('static',filename='img/titonfenwick.png')}}" height = 224/4 width = 224/4>
+      <b><font color="white">@titonfenwick</b>
+  </div>
+  <div class="placeholderA">
+      <input type="checkbox" class="toggle" name='room' value = "hernandezgreene">
+      <img src = " {{url_for('static',filename='img/hernandezgreene.png')}}" height = 224/4 width = 224/4>
+      <b><font color="white">@hernandezgreene</b>
+  </div>
+</div>
+
+<div class="labelA">Portrait</div>
+<div id="imgA">
+{% for image_name in categories['portrait'] %}
+  <img src = " {{url_for('get_file',filename=image_name)}}" height = 224/4 width = 224/4>
+{% endfor %}
+</div>
+
+<div id="filtersPortraitA">
+    <div id="labelFoodA">Portrait</div>
+  <div class="placeholderA">
+      <input type="checkbox" class="toggle" name='portrait' value = "jesseherzog">
+      <img src = " {{url_for('static',filename='img/jesseherzog.png')}}" height = 224/4 width = 224/4>
+      <b><font color="white">@jesseherzog</b>
+  </div>
+  <div class="placeholderA">
+      <input type="checkbox" class="toggle" name='portrait' value = "5thphvse">
+      <img src = " {{url_for('static',filename='img/5thphvse.jpg')}}" height = 224/4 width = 224/4>
+      <b><font color="white">@___5thphvse___</b>
+  </div>
+  <div class="placeholderA">
+      <input type="checkbox" class="toggle" name='portrait' value = "aaa">
+      <img src = " {{url_for('static',filename='img/jordanvoth.jpg')}}" height = 224/4 width = 224/4>
+      <b><font color="white">@jordanvoth</b>
+  </div>
+  <div class="placeholderA">
+      <input type="checkbox" class="toggle" name='portrait' value = "mortenlen.sea">
+      <img src = " {{url_for('static',filename='img/mortenlen.sea.png')}}" height = 224/4 width = 224/4>
+      <b><font color="white">@mortenlen.sea</b>
+  </div>
+  </div>
+
+<div class="labelA">Style not imported</div>
+<div id="imgA">
 {% for image_name in categories['style_not_imported'] %}
-	<img src = " {{url_for('send_upload',filename=image_name)}}" height = 256/4 width = 256/4>
-{% endfor %}
-<figcaption>style_not_imported</figcaption>
-</figure>
+  <img src = " {{url_for('get_file',filename=image_name)}}" height = 224/4 width = 224/4>
+{% endfor %}dd
+</div>
 
-<!-- <div id="container">
-  <div class="pagetitle">
-    <h1>Let's Rock!</h1>
-  </div>
-  <div id="main">
-    <form method=post>
-     <input type=submit value="Style Transfer">
-    </form>
-  </div>
-</div> -->
 
-<form class="form-inline" method="POST">
-  <div class="form-group">
-    <div class="input-group">
-        <span class="input-group-addon">Please select</span>
-            <select name="style_select" class="selectpicker form-control">
-            	<option value="vibrantandpure">food_style_1</option>
-              	<option value="lichipan">food_style_2</option>
-            </select>
-
-            <select name="degree_select" class="selectpicker form-control">
-            	{% for degree in range(20,60,10)%}
-            		<option value={{degree}}>{{degree}}</option>
-              	{% endfor %}
-            </select>
-    </div>
-    <button type="submit" class="btn btn-default">Style Transfer</button>
-  </div>
+<button type="submit" class="btn btn-default"><div id="stylize-ctaA">Next</div></button>
 </form>
 
-</body>
-</html>
+
+
+
+{% endblock %}

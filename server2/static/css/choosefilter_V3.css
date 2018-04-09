@@ -1,0 +1,123 @@
+#back-buttonA {
+	color: #ef6428;
+	font-weight: bold;
+	margin-left: 5vw;
+	margin-top: 5vh;
+}
+#back-buttonA:hover {
+	color: #ed8c61;
+}
+a:hover {
+	text-decoration: none;
+}
+#back-buttonA {
+	color: #ef6428;
+	font-weight: bold;
+	margin-left: 5vw;
+	margin-top: 5vh;
+}
+#back-buttonA:hover {
+	color: #ed8c61;
+}
+a:hover {
+	text-decoration: none;
+}
+
+.informA {
+	margin-left: 10vw;
+}
+
+#imgA {
+	width: 40vw;
+	height: 55vh;
+	background-color: lightgray;
+	margin-left: 10vw;
+	margin-top: 1vh;
+	margin-bottom: 5vh;
+}
+
+#filtersFoodA {
+	width: 50vw;
+	top: 34vh;
+	left: 55vw;
+	position: absolute;
+}
+
+#filtersRoomA {
+	width: 50vw;
+	top: 99vh;
+	left: 55vw;
+	position: absolute;
+}
+
+#filtersPortraitA {
+	width: 50vw;
+	top: 164vh;
+	left: 55vw;
+	position: absolute;
+}
+
+#filtersNullA {
+	width: 50vw;
+	top: 229vh;
+	left: 55vw;
+	position: absolute;
+}
+
+.placeholderA {
+	width: 15vw;
+	height: 26vh;
+	margin: 1vw;
+	float: left;
+	background-color: gray;
+}
+.placeholderA:hover {
+	cursor: pointer;
+	background-color: lightgray;
+}
+
+#stylize-ctaA {
+	position: fixed;
+	top: 10vh;
+	left: 85vw;
+	width: 10vw;
+	height: 10vh;
+	color: white;
+	padding-top: 3vh;
+	text-align: center;
+	border-radius: 4px;
+	font-size: 18px;
+	background-color: #e8699e;
+}
+#stylize-ctaA:hover {
+	background-color: #e8a7c2;
+	cursor: pointer;
+}
+
+.labelA {
+	margin-left: 10vw;
+}
+
+#labelFoodA {
+	position: absolute;
+	left: 1vw;
+	top: -2vh;
+}
+
+#labelRoomA {
+	position: absolute;
+	left: 23vw;
+	top: -2vh;
+}
+
+#labelPortraitA {
+	position: absolute;
+	left: 1vw;
+	top: 43vh;
+}
+
+#labelNullA {
+	position: absolute;
+	left: 23vw;
+	top: 43vh;
+}

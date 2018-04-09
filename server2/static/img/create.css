@@ -1,0 +1,28 @@
+.user-actions {
+	width: 30vw;
+	height: 50vh;
+	margin-left: 13vw;
+	margin-top: 30vh;
+	float: left;
+	border-radius: 10px;
+	color: white;
+	text-align: center;
+}
+
+.word {
+	margin-top: 22vh;
+}
+
+#filter {
+	background-color: #ef6428;
+}
+#filter:hover {
+	background-color: #ed8c61;
+}
+
+#style {
+	background-color: #42b0e1;
+}
+#style:hover {
+	background-color: #99cae0;
+}

@@ -1,0 +1,78 @@
+#back-button {
+	color: #ef6428;
+	font-weight: bold;
+	position: absolute;
+	left: 5vw;
+	top: 5vh;
+}
+#back-button:hover {
+	color: #ed8c61;
+}
+
+#home-button {
+	color: #ef6428;
+	font-weight: bold;
+	margin-left: 90vw;
+	margin-top: 5vh;
+}
+#home-button:hover {
+	color: #ed8c61;
+}
+
+
+a:hover {
+	text-decoration: none;
+}
+
+.completed-imgB {
+	width: 18vw;
+	height: 35vh;
+	margin: 1vw;
+	background-color: lightgray;
+}
+
+#img-galleryB {
+	margin-left: 10vw;
+	margin-bottom: 30vh;
+}
+
+h3 {
+	text-align: center;
+	margin-bottom: 10vh;
+}
+
+#save-ctaB {
+	position: fixed;
+	top: 84vh;
+	left: 35vw;
+	width: 10vw;
+	height: 10vh;
+	color: white;
+	padding-top: 3vh;
+	text-align: center;
+	border-radius: 4px;
+	font-size: 18px;
+	background-color: #e8699e;
+}
+#save-ctaB:hover {
+	background-color: #e8a7c2;
+	cursor: pointer;
+}
+
+#stylize-ctaB {
+	position: fixed;
+	top: 84vh;
+	left: 55vw;
+	width: 10vw;
+	height: 10vh;
+	color: white;
+	padding-top: 3vh;
+	text-align: center;
+	border-radius: 4px;
+	font-size: 18px;
+	background-color: #e8699e;
+}
+#stylize-ctaB:hover {
+	background-color: #e8a7c2;
+	cursor: pointer;
+}
